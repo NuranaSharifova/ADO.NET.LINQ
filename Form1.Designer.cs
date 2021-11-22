@@ -61,6 +61,7 @@ namespace ADO.NET.LINQ
             this.runbutton.TabIndex = 2;
             this.runbutton.Text = "Run";
             this.runbutton.UseVisualStyleBackColor = true;
+            this.runbutton.Click += new System.EventHandler(this.runbutton_Click);
             // 
             // creationbutton
             // 

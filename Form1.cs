@@ -15,6 +15,7 @@ namespace ADO.NET.LINQ
     public partial class Form1 : Form
     {
         SqlConnection connection;
+        GeographyServerDataContext db;
         public Form1()
         {
             InitializeComponent();
@@ -27,6 +28,7 @@ namespace ADO.NET.LINQ
             comboBox1.Items.Add("Top 5 cities according to population");
             comboBox1.Items.Add("Top 3 continents according to area");
             comboBox1.Items.Add("Top 3 continents according to population");
+            db = new GeographyServerDataContext();
         }
 
         private void creationbutton_Click(object sender, EventArgs e)
@@ -67,21 +69,21 @@ namespace ADO.NET.LINQ
                                 @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('BRAZIL',4,8514877)",
                                 @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('FRANCE',6,640679)",
                                 @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('NORWAY',6,385207)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Guangzhou-Foshan',1,20597000,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Moscow',2,16170000,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Istanbul',3,13287000,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Buenos Aires',8,14122000,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Paris',10,10858000,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Chengdu',1,10376000,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('St. Petersburg',2, 5126000,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Tripoli',4,2220000,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Jumayl',4,39344,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Tunis',5,638845,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Toronto',7,2731571,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Ottawa',7,934243,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Buenos Aires',8,13588171,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Santa Fe',8,490171,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Salvador',9,2900319,1)" };
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Guangzhou-Foshan',1,20597000,0)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Moscow',2,16170000,1)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Istanbul',3,13287000,1)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Buenos Aires',8,14122000,1)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Paris',10,10858000,1)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Chengdu',1,10376000,0)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('St. Petersburg',2, 5126000,0)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Tripoli',4,2220000,1)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Jumayl',4,39344,0)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Tunis',5,638845,1)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Toronto',7,2731571,1)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Ottawa',7,934243,0)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Buenos Aires',8,13588171,1)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Santa Fe',8,490171,0)",
+                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Salvador',9,2900319,0)" };
             for (int i = 0; i < queries.Length; i++)
             {
                 SqlCommand command = new SqlCommand(queries[i], connection);
@@ -91,6 +93,40 @@ namespace ADO.NET.LINQ
 
             MessageBox.Show("DataBase is ready");
             connection.Close();
+        }
+
+        private void runbutton_Click(object sender, EventArgs e)
+        {
+            string txt = comboBox1.SelectedItem.ToString();
+            switch (txt)
+            {
+                case "All Continents":
+                    datagrid.DataSource = db.CONTINENTs.Select(x =>new { x.NAME });                           
+                    break;
+                case "All Countries":
+                    datagrid.DataSource = db.COUNTRies.Select(x=>new { x.NAME });
+                    break;
+                case "All Capital Cities":
+                    datagrid.DataSource = db.CITies.Where(x=>x.CAPITAL==true).Select(x => new { x.NAME }); ;
+                break;
+                case "Top 5 countries according to area":
+                    datagrid.DataSource = db.COUNTRies.Select(x=> new { x.NAME, x.AREA }).OrderByDescending(x => x.AREA).Take(5).Select(z=>new { z.NAME,z.AREA});
+                    break;
+                case "Top 5 countries according to population":
+                    datagrid.DataSource = db.COUNTRies.OrderByDescending(x => x.CITies.Sum(y => y.POPULATION_)).Take(5).Select(z=>new { z.NAME,z.CITies });
+                    break;
+                case "Top 5 cities according to population":
+                    datagrid.DataSource = db.CITies.OrderByDescending(x => x.POPULATION_).Take(3).Select(z=>new {z.NAME,z.POPULATION_ });
+                    break;
+                case "Top 3 continents according to area":
+                    datagrid.DataSource = db.CONTINENTs.OrderByDescending(x => x.COUNTRies.Sum(y => y.AREA)).Take(3).Select(z=>new { z.NAME,z.COUNTRies });
+                    break;
+                case "Top 3 continents according to population":
+                    datagrid.DataSource = db.CONTINENTs.OrderByDescending(x => x.COUNTRies.Sum(y => y.CITies.Sum(z => z.POPULATION_))).Take(3).Select(i => new { i.NAME}) ;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
