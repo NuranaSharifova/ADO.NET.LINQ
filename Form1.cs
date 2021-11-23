@@ -38,6 +38,7 @@ namespace ADO.NET.LINQ
                             @"CREATE TABLE COUNTRIES(ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,NAME NVARCHAR(50) NOT NULL,CONTINENTID INT NOT NULL FOREIGN KEY REFERENCES CONTINENTS (ID),AREA INT NOT NULL)",
                             @"CREATE TABLE CITIES(ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,NAME NVARCHAR(50),COUNTRYID INT NOT NULL FOREIGN KEY REFERENCES COUNTRIES(ID),
                             POPULATION_ INT NOT NULL,CAPITAL BIT NOT NULL,)"};
+           
             for (int i = 0; i < queries.Length; i++)
             {
                 SqlCommand command = new SqlCommand(queries[i], connection);
@@ -52,47 +53,43 @@ namespace ADO.NET.LINQ
         private void fillbutton_Click(object sender, EventArgs e)
         {
             connection.Open();
-            string[] queries = {@"INSERT INTO CONTINENTS(NAME) VALUES('ASIA')",
-                                @"INSERT INTO CONTINENTS(NAME) VALUES('AFRICA')",
-                                @"INSERT INTO CONTINENTS(NAME) VALUES('NORTH AMERICA')",
-                                @"INSERT INTO CONTINENTS(NAME) VALUES('SOUTH AMERICA')",
-                                @"INSERT INTO CONTINENTS(NAME) VALUES('ANTARCTICA')",
-                                @"INSERT INTO CONTINENTS(NAME) VALUES('EUROPE')",
-                                @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('CHINA',1,9596961)",
-                                @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('RUSSIA',1,17098242)",
-                                @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('TURKEY',1,783562)",
-                                @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('LIBYA',2,1759540)",
-                                @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('TUNUSIA',2,10486339)",
-                                @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('BARBADOS',3,430)",
-                                @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('CANADA',3,9984670)",
-                                @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('ARGENTINA',4,2766890)",
-                                @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('BRAZIL',4,8514877)",
-                                @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('FRANCE',6,640679)",
-                                @"INSERT INTO COUNTRIES(NAME,CONTINENTID,AREA) VALUES ('NORWAY',6,385207)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Guangzhou-Foshan',1,20597000,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Moscow',2,16170000,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Istanbul',3,13287000,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Buenos Aires',8,14122000,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Paris',10,10858000,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Chengdu',1,10376000,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('St. Petersburg',2, 5126000,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Tripoli',4,2220000,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Jumayl',4,39344,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Tunis',5,638845,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Toronto',7,2731571,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Ottawa',7,934243,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Buenos Aires',8,13588171,1)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Santa Fe',8,490171,0)",
-                                @"INSERT INTO CITIES (NAME,COUNTRYID,POPULATION_,CAPITAL) VALUES ('Salvador',9,2900319,0)" };
-            for (int i = 0; i < queries.Length; i++)
-            {
-                SqlCommand command = new SqlCommand(queries[i], connection);
-                command.ExecuteNonQuery();
-            }
+        
+            db.CONTINENTs.InsertOnSubmit(new CONTINENT() { NAME = "ASIA" });
+            db.CONTINENTs.InsertOnSubmit(new CONTINENT() { NAME = "AFRICA" });
+            db.CONTINENTs.InsertOnSubmit(new CONTINENT() { NAME = "NORTH AMERICA" });
+            db.CONTINENTs.InsertOnSubmit(new CONTINENT() { NAME = "SOUTH AMERICA" });
+            db.CONTINENTs.InsertOnSubmit(new CONTINENT() { NAME = "ANTARCTICA" });
+            db.CONTINENTs.InsertOnSubmit(new CONTINENT() { NAME = "EUROPE" });
 
+            db.COUNTRies.InsertOnSubmit(new COUNTRy() { NAME = "CHINA", CONTINENTID = 1, AREA = 9596961 });
+            db.COUNTRies.InsertOnSubmit(new COUNTRy() { NAME = "RUSSIA", CONTINENTID = 1, AREA = 17098242 });
+            db.COUNTRies.InsertOnSubmit(new COUNTRy() { NAME = "TURKEY", CONTINENTID = 1, AREA = 783562 });
+            db.COUNTRies.InsertOnSubmit(new COUNTRy() { NAME = "LIBYA", CONTINENTID = 2, AREA = 1759540 });
+            db.COUNTRies.InsertOnSubmit(new COUNTRy() { NAME = "TUNUSIA", CONTINENTID = 2, AREA = 10486339 });
+            db.COUNTRies.InsertOnSubmit(new COUNTRy() { NAME = "BARBADOS", CONTINENTID = 3, AREA =430 });
+            db.COUNTRies.InsertOnSubmit(new COUNTRy() { NAME = "CANADA", CONTINENTID = 3, AREA = 9984670 });
+            db.COUNTRies.InsertOnSubmit(new COUNTRy() { NAME = "ARGENTINA", CONTINENTID = 4, AREA = 2766890 });
+            db.COUNTRies.InsertOnSubmit(new COUNTRy() { NAME = "BRAZIL", CONTINENTID = 4, AREA = 8514877 });
+            db.COUNTRies.InsertOnSubmit(new COUNTRy() { NAME = "FRANCE", CONTINENTID = 6, AREA = 640679 });
+            db.COUNTRies.InsertOnSubmit(new COUNTRy() { NAME = "NORWAY", CONTINENTID = 6, AREA = 385207 });
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Guangzhou-Foshan", COUNTRYID =1, POPULATION_ = 20597000, CAPITAL = false });
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Moscow", COUNTRYID = 2, POPULATION_ = 16170000, CAPITAL = true });
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Istanbul", COUNTRYID = 3, POPULATION_ = 13287000, CAPITAL = true });
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Buenos Aires", COUNTRYID = 8, POPULATION_ = 14122000, CAPITAL = true });
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Paris", COUNTRYID = 10, POPULATION_ = 10858000, CAPITAL = true});
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Chengdu", COUNTRYID = 1, POPULATION_ = 10376000, CAPITAL = false });
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "St. Petersburg", COUNTRYID = 2, POPULATION_ = 5126000, CAPITAL = false });
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Tripoli", COUNTRYID = 4, POPULATION_ = 2220000, CAPITAL = false });
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Tunis", COUNTRYID = 5, POPULATION_ = 638845, CAPITAL = true });
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Jumayl", COUNTRYID = 4, POPULATION_ = 39344, CAPITAL = false});
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Toronto", COUNTRYID = 7, POPULATION_ = 20597000, CAPITAL = true});
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Ottawa", COUNTRYID = 1, POPULATION_ = 934243, CAPITAL = false });
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Santa Fe", COUNTRYID = 8, POPULATION_ = 490171, CAPITAL = false });
+            db.CITies.InsertOnSubmit(new CITy() { NAME = "Salvador", COUNTRYID = 9, POPULATION_ = 2900319, CAPITAL = false });
+            db.SubmitChanges();
+            connection.Close();
 
             MessageBox.Show("DataBase is ready");
-            connection.Close();
         }
 
         private void runbutton_Click(object sender, EventArgs e)
