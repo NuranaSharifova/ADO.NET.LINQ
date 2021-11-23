@@ -101,13 +101,13 @@ namespace ADO.NET.LINQ
             switch (txt)
             {
                 case "All Continents":
-                    datagrid.DataSource = db.CONTINENTs.Select(x =>new { x.NAME });                           
+                    datagrid.DataSource = db.CONTINENTs.OrderBy(x=>x.ID).Select(x => new { x.NAME });                     
                     break;
                 case "All Countries":
-                    datagrid.DataSource = db.COUNTRies.Select(x=>new { x.NAME });
+                    datagrid.DataSource = db.COUNTRies.OrderBy(x => x.ID).Select(x => new { x.NAME });
                     break;
                 case "All Capital Cities":
-                    datagrid.DataSource = db.CITies.Where(x=>x.CAPITAL==true).Select(x => new { x.NAME }); ;
+                    datagrid.DataSource = db.CITies.Where(x=>x.CAPITAL==true).Select(x => new { x.NAME });
                 break;
                 case "Top 5 countries according to area":
                     datagrid.DataSource = db.COUNTRies.Select(x=> new { x.NAME, x.AREA }).OrderByDescending(x => x.AREA).Take(5).Select(z=>new { z.NAME,z.AREA});
@@ -123,6 +123,42 @@ namespace ADO.NET.LINQ
                     break;
                 case "Top 3 continents according to population":
                     datagrid.DataSource = db.CONTINENTs.OrderByDescending(x => x.COUNTRies.Sum(y => y.CITies.Sum(z => z.POPULATION_))).Take(3).Select(i => new { i.NAME}) ;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void datagrid_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int text = datagrid.SelectedCells[0].RowIndex+1;
+
+            switch (comboBox1.SelectedItem.ToString())
+            {
+                case "All Continents":
+                    datagrid.DataSource = db.COUNTRies.Where(x => x.CONTINENTID == text).Select(y => new { y.NAME });
+                    break;
+                case "All Countries":
+                    datagrid.DataSource = db.CITies.Where(x => x.COUNTRYID == text).Select(y => new { y.NAME });
+                    break;
+                default:
+                    break;
+            }
+            
+     
+            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            switch (comboBox1.SelectedItem.ToString())
+            {
+                case "All Continents":
+                    datagrid.DataSource = db.CONTINENTs.OrderBy(x => x.ID).Select(x => new { x.NAME });
+                    break;
+                case "All Countries":
+                    datagrid.DataSource = db.COUNTRies.OrderBy(x => x.ID).Select(x => new { x.NAME });
                     break;
                 default:
                     break;

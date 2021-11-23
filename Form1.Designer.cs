@@ -34,6 +34,7 @@ namespace ADO.NET.LINQ
             this.runbutton = new System.Windows.Forms.Button();
             this.creationbutton = new System.Windows.Forms.Button();
             this.fillbutton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.datagrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,6 +45,7 @@ namespace ADO.NET.LINQ
             this.datagrid.Name = "datagrid";
             this.datagrid.Size = new System.Drawing.Size(760, 319);
             this.datagrid.TabIndex = 0;
+            this.datagrid.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datagrid_CellContentDoubleClick);
             // 
             // comboBox1
             // 
@@ -83,11 +85,22 @@ namespace ADO.NET.LINQ
             this.fillbutton.UseVisualStyleBackColor = true;
             this.fillbutton.Click += new System.EventHandler(this.fillbutton_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(661, 370);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Back";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 433);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.fillbutton);
             this.Controls.Add(this.creationbutton);
             this.Controls.Add(this.runbutton);
@@ -107,6 +120,7 @@ namespace ADO.NET.LINQ
         private System.Windows.Forms.Button runbutton;
         private System.Windows.Forms.Button creationbutton;
         private System.Windows.Forms.Button fillbutton;
+        private System.Windows.Forms.Button button1;
     }
 }
 
